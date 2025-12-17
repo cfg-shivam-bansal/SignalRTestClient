@@ -78,7 +78,7 @@ namespace SignalRTestClient
             connection.On<string>("JoinGroupError", error =>
             {
                 Console.WriteLine($"Failed to join group: {error}");
-            });      
+            });
 
             foreach (DeiceResourcePublishTypes deIceEvent in Enum.GetValues(typeof(DeiceResourcePublishTypes)))
             {
@@ -103,7 +103,9 @@ namespace SignalRTestClient
             await connection.StartAsync(stoppingToken);
             Console.WriteLine("Connected!");
 
-            await connection.InvokeAsync("JoinGroup", "ZRH", cancellationToken: stoppingToken);
+            var groupName = _configuration["siteCode"];
+
+            await connection.InvokeAsync("JoinGroup", groupName, cancellationToken: stoppingToken);
 
             // Keep running until stopped
             while (!stoppingToken.IsCancellationRequested)
